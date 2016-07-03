@@ -5,25 +5,24 @@ library(reshape2)
 
 # figure 1
 
-df <- data.frame("year" = c("1986-1990",
-                            "1991-1995",
-                            "1996-2000",
-                            "2001-2005",
-                            "2006-2010",
-                            "2011-2015"),
+df1 <- data.frame("year" = c("1986-1990",
+                             "1991-1995",
+                             "1996-2000",
+                             "2001-2005",
+                             "2006-2010",
+                             "2011-2015"),
 
-                 "study" = c(2,
-                             2,
-                             1,
-                             1,
-                             9,
-                             16))
+                  "study" = c(2,
+                              2,
+                              1,
+                              1,
+                              9,
+                              16))
 
+# color_ = "darkblue"
+color_ = brewer.pal(5, "Set1")[2]
 
-
-color_ = "black"
-
-ggplot(df, aes(x=year, y=study, group=1)) +
+ggplot(df1, aes(x=year, y=study, group=1)) +
     geom_point(stat='summary', fun.y=sum, color = color_) +
     stat_summary(fun.y=sum, geom="line", size = 1, color = color_) +
     xlab("Year") + ylab("Number of Studies") +
@@ -33,20 +32,20 @@ ggplot(df, aes(x=year, y=study, group=1)) +
     # theme_classic()
     # scale_color_manual(brewer.pal(9, "PuOr")[5])
 
-ggsave("img/figure1.png", plot = last_plot(), device = NULL, path = NULL,
+ggsave("img/figure1_color.png", plot = last_plot(), device = NULL, path = NULL,
        scale = 1, width = 12, height = 8, units = "in",
        dpi = 300, limitsize = TRUE)
 
 #Figure 2
-df <- read.csv("fig2.csv", stringsAsFactors = F)
-df <- melt(df, id.vars = "Study")
-names(df) <- c("study", "race", "pct")
-df$race <- factor(df$race)
-levels(df$race) <- c("White/Caucasian", "Black/African",
+df2 <- read.csv("fig2.csv", stringsAsFactors = F)
+df2 <- melt(df2, id.vars = "Study")
+names(df2) <- c("study", "race", "pct")
+df2$race <- factor(df2$race)
+levels(df2$race) <- c("White/Caucasian", "Black/African",
                      "Hispanic/Latino", "Asian", "Other")
-df$study <- factor(df$study, levels = df$study[12:1])
+df2$study <- factor(df2$study, levels = df2$study[12:1])
 
-ggplot(data = df) +
+ggplot(data = df2) +
     geom_bar(aes(x = study, y = pct, fill = race), stat = "identity") +
     # scale_fill_brewer(palette = "Set2") +
     scale_fill_manual(values = brewer.pal(5, "Set1")[c(2,1,3,4,5)],
